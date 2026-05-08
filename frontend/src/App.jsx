@@ -7,6 +7,7 @@ function App() {
   const [selectedFile, setSelectedFile] = useState(null)
   const [question, setQuestion] = useState("")
   const [extractedText, setExtractedText] = useState("")
+  const [risks, setRisks] = useState([])
 
   const handleAnalyze = () => {
 
@@ -36,9 +37,10 @@ function App() {
     )
       .then((response) => {
         setExtractedText(response.data.summary)
+        setRisks(response.data.risks)
       })
       .catch((error) => {
-        console.log(error)
+        console.log("error happend here application mode ")
       })
 
   }
@@ -232,69 +234,69 @@ function App() {
           - Dynamic red risk rendering
           - AI generated clause
         */}
-                <div className="border border-red-200 bg-red-50 rounded-xl p-4">
+                {
+                  risks?.map((risk, index) => (
 
-                  {/* Card Header */}
-                  <div className="flex justify-between items-center mb-2">
+                    <div
+                      key={index}
 
-                    {/* Risk Title */}
-                    <h3 className="font-semibold text-red-700">
-                      High Risk Clause
-                    </h3>
+                      className={`
 
-                    {/* Risk Type Label */}
-                    <span className="text-sm text-red-600">
-                      Claim Rejection Risk
-                    </span>
+  border
+  rounded-xl
+  p-4
 
-                  </div>
+  ${risk.level === "High Risk"
+                          ? "bg-red-50 border-red-200"
 
-                  {/* Risk Description */}
-                  <p className="text-gray-700">
-                    Diabetes-related complications are excluded during the first 24 months.
-                  </p>
+                          : "bg-yellow-50 border-yellow-200"
+                        }
 
-                </div>
+`}
+                    >
 
-                {/* ================= MEDIUM RISK CARD ================= */}
+                      <div className="flex justify-between items-center mb-2">
 
-                {/* 
-          Medium Severity Risk Card
+                        <h3 className={`
+  font-semibold
 
-          Future:
-          - Financial impact analysis
-          - Dynamic AI explanations
-        */}
-                <div className="border border-yellow-200 bg-yellow-50 rounded-xl p-4">
+  ${
+    risk.level === "High Risk"
+      ? "text-red-700"
+      : "text-yellow-700"
+  }
+`}>
+                          {risk.type}
+                        </h3>
 
-                  {/* Card Header */}
-                  <div className="flex justify-between items-center mb-2">
+                        <span className={`
+  text-sm
 
-                    {/* Risk Title */}
-                    <h3 className="font-semibold text-yellow-700">
-                      Medium Risk Clause
-                    </h3>
+  ${
+    risk.level === "High Risk"
+      ? "text-red-600"
+      : "text-yellow-600"
+  }
+`}>
+                          {risk.level}
+                        </span>
 
-                    {/* Risk Category */}
-                    <span className="text-sm text-yellow-600">
-                      Financial Impact
-                    </span>
+                      </div>
 
-                  </div>
+                    </div>
 
-                  {/* Risk Description */}
-                  <p className="text-gray-700">
-                    Room rent capped at ₹5000/day may increase out-of-pocket expenses.
-                  </p>
+                  ))
+                }
 
-                </div>
 
               </div>
+
             </div>
+          </div>
 
-            {/* ================= POLICY COMPARISON TABLE ================= */}
+          {/* ================= POLICY COMPARISON TABLE ================= */}
 
-            {/* 
+          {/* 
       Policy Comparison Section
 
       Future:
@@ -302,71 +304,71 @@ function App() {
       - Dynamic comparison rendering
       - Comparison AI insights
     */}
-            <div className="bg-white p-6 rounded-2xl shadow-md mt-6 overflow-x-auto">
+          <div className="bg-white p-6 rounded-2xl shadow-md mt-6 overflow-x-auto">
 
-              {/* Section Title */}
-              <h2 className="text-2xl font-semibold mb-4">
-                Policy Comparison
-              </h2>
+            {/* Section Title */}
+            <h2 className="text-2xl font-semibold mb-4">
+              Policy Comparison
+            </h2>
 
-              {/* Comparison Table */}
-              <table className="w-full border-collapse">
+            {/* Comparison Table */}
+            <table className="w-full border-collapse">
 
-                {/* Table Header */}
-                <thead>
+              {/* Table Header */}
+              <thead>
 
-                  <tr className="bg-gray-100 text-left">
+                <tr className="bg-gray-100 text-left">
 
-                    <th className="p-3">Feature</th>
-                    <th className="p-3">Policy A</th>
-                    <th className="p-3">Policy B</th>
+                  <th className="p-3">Feature</th>
+                  <th className="p-3">Policy A</th>
+                  <th className="p-3">Policy B</th>
 
-                  </tr>
+                </tr>
 
-                </thead>
+              </thead>
 
-                {/* Table Body */}
-                <tbody>
+              {/* Table Body */}
+              <tbody>
 
-                  {/* Waiting Period Row */}
-                  <tr className="border-t">
+                {/* Waiting Period Row */}
+                <tr className="border-t">
 
-                    <td className="p-3">Waiting Period</td>
-                    <td className="p-3">24 Months</td>
-                    <td className="p-3">12 Months</td>
+                  <td className="p-3">Waiting Period</td>
+                  <td className="p-3">24 Months</td>
+                  <td className="p-3">12 Months</td>
 
-                  </tr>
+                </tr>
 
-                  {/* Room Rent Row */}
-                  <tr className="border-t">
+                {/* Room Rent Row */}
+                <tr className="border-t">
 
-                    <td className="p-3">Room Rent Limit</td>
-                    <td className="p-3">₹5000/day</td>
-                    <td className="p-3">No Limit</td>
+                  <td className="p-3">Room Rent Limit</td>
+                  <td className="p-3">₹5000/day</td>
+                  <td className="p-3">No Limit</td>
 
-                  </tr>
+                </tr>
 
-                  {/* Co-pay Row */}
-                  <tr className="border-t">
+                {/* Co-pay Row */}
+                <tr className="border-t">
 
-                    <td className="p-3">Co-pay</td>
-                    <td className="p-3">20%</td>
-                    <td className="p-3">0%</td>
+                  <td className="p-3">Co-pay</td>
+                  <td className="p-3">20%</td>
+                  <td className="p-3">0%</td>
 
-                  </tr>
+                </tr>
 
-                </tbody>
+              </tbody>
 
-              </table>
-
-            </div>
+            </table>
 
           </div>
-        </div>
 
+        </div>
       </div>
 
     </div>
+
+    // </div >
   )
 }
 
